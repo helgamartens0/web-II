@@ -1,0 +1,147 @@
+/* General styles */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#buscador {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 3px solid rgb(0, 183, 255);
+}
+
+#buscador form {
+    display: flex;
+    gap: 20px;
+}
+
+#buscador label {
+    font-weight: bold;
+}
+
+#grilla {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 columnas */
+    grid-auto-rows: 1fr;
+    /* Filas automáticas con la misma altura */
+    gap: 20px;
+    /* Espacio entre los elementos */
+    margin-bottom: 20px;
+    border: 3px solid red;
+}
+
+#paginacion {
+    margin: 10px;
+    padding: 10px;
+    border: 3px solid rgb(128, 255, 0);
+}
+
+#tooltip {
+    position: absolute;
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+    z-index: 1000;
+    /* Asegura que el tooltip esté por encima de otros elementos */
+}
+
+.objeto {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.objeto img {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    /* Ajuste de tamaño máximo de las imágenes */
+    object-fit: contain;
+    /* Evita que se recorten las imágenes */
+    margin-bottom: 10px;
+}
+
+.objeto h4 {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.objeto h6 {
+    font-size: 14px;
+    color: #555;
+    margin: 5px 0;
+}
+
+.objeto:hover {
+    transform: scale(1.05);
+    /* Efecto de hover para resaltar las tarjetas */
+}
+
+#paginacion {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.page-button {
+    margin: 0 5px;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.page-button:hover {
+    background-color: #0056b3;
+}
+
+
+/* Media query para pantallas más pequeñas */
+
+@media (max-width: 1024px) {
+    #grilla {
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 columnas para pantallas medianas */
+    }
+}
+
+@media (max-width: 768px) {
+    #grilla {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columnas para pantallas pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    #grilla {
+        grid-template-columns: 1fr;
+        /* 1 columna para pantallas muy pequeñas */
+    }
+}
+
+#mensajes {
+    font-size: 16px;
+    color: red;
+    margin-bottom: 20px;
+}
+
+#paginacion {
+    text-align: center;
+}

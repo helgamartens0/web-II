@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAGINA DE INICIO - Museo de Nueva York</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="buscador">
+            <form action="" method="post">
+                <div id="departamento-input">
+                    <label for="departamento">Departamento:</label>
+                    <select name="departamento" id="departamento">
+                        <option value="">Seleccione departamento</option>
+                    </select>
+                </div>
+
+                <div id="palabra-clave-input">
+                    <label for="palabra-clave">Palabra clave:</label>
+                    <input type="text" id="keyword" name="keyword">
+                </div>
+
+                <div id="localizacion-input">
+                    <label for="localizacion">Localizacion:</label>
+                    <select name="localizacion" id="localizacion">
+                        <option value="">Seleccione localización</option>
+                        <option value="China">China</option>
+                        <option value="Paris">Paris</option>
+                        <option value="New York">New York</option>
+                    </select>
+                </div>
+            </form>
+
+            <button id="buscar">Buscar</button>
+        </div>
+
+        <div id="grilla"></div>
+
+        <div id="paginacion">
+            <button id="prev" disabled>Anterior</button>
+            <span id="pagina-actual">Página 1</span>
+            <button id="next">Siguiente</button>
+        </div>
+
+
+        <!-- Tooltip para mostrar la fecha de creación -->
+        <div id="tooltip" style="position: absolute; display: none; background-color: white; border: 1px solid black; padding: 5px;"></div>
+    </div>
+
+</body>
+
+</html>
