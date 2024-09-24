@@ -280,6 +280,7 @@ fetch(URL_SEARCH_IMAGES).then(response => response.json()).then(data => {
 });*/
 
 
+
 const URL_DEPARTAMENTOS = "https://collectionapi.metmuseum.org/public/collection/v1/departments";
 const URL_OBJETOS = "https://collectionapi.metmuseum.org/public/collection/v1/objects/";
 const URL_SEARCH_IMAGES = "https://collectionapi.metmuseum.org/public/collection/v1/search?q=&hasImages=true";
@@ -288,7 +289,7 @@ let idsProblematicos = [855340, 38153, 854970];
 let objectIDs = [];
 let currentPage = 1;
 const itemsPerPage = 20; // Objetos por página
-const maxItems = 80;
+const maxItems = 100;
 //Máximo de objetos a mostrar
 
 function fetchDepartamentos() {
@@ -338,61 +339,54 @@ fetch(URL_SEARCH_IMAGES).then(response => response.json()).then(data => {
     fetchObjetos(); // Obtener objetos para la primera carga
 });
 
+
 async function fetchObjetos() {
     let objetosHtml = '';
     const filteredIDs = objectIDs.filter(id => !idsProblematicos.includes(id)); // Filtrar IDs problemáticos
 
-    // Calcular el índice inicial y final para la página actual
     const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, filteredIDs.length);
 
-    // Asegúrate de que no excedas la longitud del array
     const currentIDs = filteredIDs.slice(startIndex, endIndex);
 
-    // Usar un contador para llevar la cuenta de objetos válidos encontrados
-    let validObjectsFound = 0;
-    while (validObjectsFound < itemsPerPage) {
-        for (const objectId of currentIDs) {
-            try {
-                const response = await fetch(URL_OBJETOS + objectId);
+    for (const objectId of currentIDs) {
+        try {
+            const response = await fetch(URL_OBJETOS + objectId);
 
-                // Si el objeto no es válido, lo agregamos a la lista de problemáticos y seguimos al siguiente
-                if (!response.ok) {
-                    idsProblematicos.push(objectId);
-                    continue;
-                }
-
-                // Procesamos el objeto válido
-                const data = await response.json();
-                const imageUrl = data.primaryImageSmall ? data.primaryImageSmall : 'imagen_no_disponible.jpeg';
-                const titulo = data.title ? data.title : 'Título no disponible';
-                const cultura = data.culture ? data.culture : 'Cultura no disponible';
-                const dinastia = data.dynasty ? data.dynasty : 'Dinastía no disponible';
-
-                // Construimos el HTML del objeto
-                objetosHtml += `
-                <div class="objeto" title="Fecha de creación: ${data.objectBeginDate || 'Desconocida'}">
-                    <img src="${imageUrl}" alt="No image available">
-                    <h4 class="titulo">${titulo}</h4>
-                    <h6 class="cultura">${cultura}</h6>
-                    <h6 class="dinastia">${dinastia}</h6>
-                </div>`;
-
-                validObjectsFound++; // Incrementamos el contador de objetos válidos
-
-            } catch (error) {
-                // Si hay un error, también lo agregamos a los IDs problemáticos
+            if (!response.ok) {
                 idsProblematicos.push(objectId);
+                continue;
             }
+
+            const data = await response.json();
+            const imageUrl = data.primaryImageSmall ? data.primaryImageSmall : 'imagen_no_disponible.jpeg';
+            const titulo = data.title ? data.title : 'Título no disponible';
+            const cultura = data.culture ? data.culture : 'Cultura no disponible';
+            const dinastia = data.dynasty ? data.dynasty : 'Dinastía no disponible';
+
+            // Crear enlace para ver imágenes adicionales
+            const additionalImagesLink = data.additionalImages && data.additionalImages.length > 0 ?
+                `<a href="additional-images.html?objectId=${objectId}" class="additional-images-button">Ver más imágenes</a>` : '';
+
+            // Construimos el HTML del objeto
+            objetosHtml += `
+            <div class="objeto" title="Fecha de creación: ${data.objectBeginDate || 'Desconocida'}">
+                <img src="${imageUrl}" alt="No image available">
+                <h4 class="titulo">${titulo}</h4>
+                <h6 class="cultura">${cultura}</h6>
+                <h6 class="dinastia">${dinastia}</h6>
+                ${additionalImagesLink} <!-- Mostrar el enlace si hay imágenes adicionales -->
+            </div>`;
+
+        } catch (error) {
+            idsProblematicos.push(objectId); // Si hay un error, también lo agregamos a los IDs problemáticos
         }
     }
 
-    // Asignamos el HTML generado al contenedor
     document.getElementById("grilla").innerHTML = objetosHtml;
-
-    // Renderizamos la paginación de acuerdo a los IDs filtrados
-    renderPagination(filteredIDs.length);
 }
+
+
 
 
 
@@ -419,4 +413,4 @@ function renderPagination(totalItems) {
 
 
 // Inicializa la aplicación
-fetchDepartamentos();
+fetchDepartamentos(); // URL base para obtener información de objetos

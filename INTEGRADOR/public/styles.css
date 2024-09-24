@@ -1,4 +1,4 @@
-/* General styles */
+/* Estilos generales */
 
 body {
     font-family: Arial, sans-serif;
@@ -13,6 +13,9 @@ body {
     margin: 0 auto;
     padding: 20px;
 }
+
+
+/* Estilo del buscador */
 
 #buscador {
     display: flex;
@@ -31,23 +34,23 @@ body {
     font-weight: bold;
 }
 
+
+/* Contenedor de la galería principal */
+
 #grilla {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     /* 4 columnas */
     grid-auto-rows: 1fr;
-    /* Filas automáticas con la misma altura */
+    /* Filas automáticas */
     gap: 20px;
     /* Espacio entre los elementos */
     margin-bottom: 20px;
     border: 3px solid red;
 }
 
-#paginacion {
-    margin: 10px;
-    padding: 10px;
-    border: 3px solid rgb(128, 255, 0);
-}
+
+/* Tooltip */
 
 #tooltip {
     position: absolute;
@@ -55,8 +58,10 @@ body {
     border: 1px solid black;
     padding: 5px;
     z-index: 1000;
-    /* Asegura que el tooltip esté por encima de otros elementos */
 }
+
+
+/* Estilo para los objetos de la galería */
 
 .objeto {
     background-color: #fff;
@@ -71,9 +76,7 @@ body {
     width: 100%;
     height: auto;
     max-height: 200px;
-    /* Ajuste de tamaño máximo de las imágenes */
     object-fit: contain;
-    /* Evita que se recorten las imágenes */
     margin-bottom: 10px;
 }
 
@@ -90,13 +93,60 @@ body {
 
 .objeto:hover {
     transform: scale(1.05);
-    /* Efecto de hover para resaltar las tarjetas */
+    /* Efecto de hover */
 }
+
+
+/* Contenedor para las imágenes adicionales */
+
+#additional-images-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.additional-image {
+    width: 200px;
+    height: auto;
+    margin: 10px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.additional-image:hover {
+    transform: scale(1.05);
+    border-color: #888;
+}
+
+
+/* Botón para ver imágenes adicionales */
+
+.additional-images-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.additional-images-link:hover {
+    background-color: #218838;
+}
+
+
+/* Paginación */
 
 #paginacion {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    text-align: center;
+    border: 3px solid rgb(128, 255, 0);
 }
 
 .page-button {
@@ -112,29 +162,13 @@ body {
     background-color: #0056b3;
 }
 
-
-/* Media query para pantallas más pequeñas */
-
-@media (max-width: 1024px) {
-    #grilla {
-        grid-template-columns: repeat(3, 1fr);
-        /* 3 columnas para pantallas medianas */
-    }
+.page-button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
-@media (max-width: 768px) {
-    #grilla {
-        grid-template-columns: repeat(2, 1fr);
-        /* 2 columnas para pantallas pequeñas */
-    }
-}
 
-@media (max-width: 480px) {
-    #grilla {
-        grid-template-columns: 1fr;
-        /* 1 columna para pantallas muy pequeñas */
-    }
-}
+/* Mensajes de error */
 
 #mensajes {
     font-size: 16px;
@@ -142,6 +176,60 @@ body {
     margin-bottom: 20px;
 }
 
-#paginacion {
+
+/* Media query para pantallas más pequeñas */
+
+@media (max-width: 1024px) {
+    #grilla {
+        grid-template-columns: repeat(3, 1fr);
+        /* 3 columnas */
+    }
+}
+
+@media (max-width: 768px) {
+    #grilla {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 columnas */
+    }
+}
+
+@media (max-width: 480px) {
+    #grilla {
+        grid-template-columns: 1fr;
+        /* 1 columna para pantallas pequeñas */
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1 {
     text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
+}
+
+#grilla-adicional {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.imagen-adicional img {
+    width: 100%;
+    height: auto;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+p {
+    text-align: center;
+    font-size: 1.2em;
+    color: #666;
 }
