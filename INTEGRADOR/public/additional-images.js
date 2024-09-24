@@ -32,3 +32,7 @@ if (objectId) {
 } else {
     document.getElementById('grilla-adicional').innerHTML = '<p>No se encontró el ID del objeto.</p>';
 }
+
+document.getElementById("volver").addEventListener("click", () => {
+    history.back();
+});

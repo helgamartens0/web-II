@@ -280,7 +280,6 @@ fetch(URL_SEARCH_IMAGES).then(response => response.json()).then(data => {
 });*/
 
 
-
 const URL_DEPARTAMENTOS = "https://collectionapi.metmuseum.org/public/collection/v1/departments";
 const URL_OBJETOS = "https://collectionapi.metmuseum.org/public/collection/v1/objects/";
 const URL_SEARCH_IMAGES = "https://collectionapi.metmuseum.org/public/collection/v1/search?q=&hasImages=true";
@@ -289,7 +288,7 @@ let idsProblematicos = [855340, 38153, 854970];
 let objectIDs = [];
 let currentPage = 1;
 const itemsPerPage = 20; // Objetos por página
-const maxItems = 100;
+const maxItems = 200;
 //Máximo de objetos a mostrar
 
 function fetchDepartamentos() {
@@ -325,10 +324,18 @@ document.getElementById("buscar").addEventListener("click", () => {
     fetch(urlBusqueda)
         .then(response => response.json())
         .then(data => {
-            // Limitar a 80 IDs y filtrar aquellos que ya sabemos que son problemáticos
-            objectIDs = data.objectIDs.filter(id => !idsProblematicos.includes(id)).slice(0, maxItems);
-            currentPage = 1; // Reiniciar a la primera página
-            fetchObjetos(); // Obtener objetos para la primera página
+            objectIDs = data.objectIDs ? data.objectIDs.filter(id => !idsProblematicos.includes(id)).slice(0, maxItems) : [];
+            currentPage = 1; // Reiniciar la página
+
+            // Mostrar el mensaje si no hay resultados
+            const mensaje = document.getElementById("mensaje");
+            if (objectIDs.length === 0) {
+                mensaje.textContent = "No hay elementos coincidentes con la busqueda.";
+                document.getElementById("grilla").innerHTML = ""; // Limpiar cualquier contenido anterior
+            } else {
+                mensaje.style.display = "none"; // Ocultar el mensaje si hay resultados
+                fetchObjetos(); // Obtener objetos para la primera página
+            }
         })
         .catch(error => console.error('Error en la búsqueda:', error));
 });
@@ -348,6 +355,7 @@ async function fetchObjetos() {
     const endIndex = Math.min(startIndex + itemsPerPage, filteredIDs.length);
 
     const currentIDs = filteredIDs.slice(startIndex, endIndex);
+    console.log(`IDs encontrados:`, currentIDs);
 
     for (const objectId of currentIDs) {
         try {
@@ -364,7 +372,6 @@ async function fetchObjetos() {
             const cultura = data.culture ? data.culture : 'Cultura no disponible';
             const dinastia = data.dynasty ? data.dynasty : 'Dinastía no disponible';
 
-            // Crear enlace para ver imágenes adicionales
             const additionalImagesLink = data.additionalImages && data.additionalImages.length > 0 ?
                 `<a href="additional-images.html?objectId=${objectId}" class="additional-images-button">Ver más imágenes</a>` : '';
 
@@ -375,24 +382,23 @@ async function fetchObjetos() {
                 <h4 class="titulo">${titulo}</h4>
                 <h6 class="cultura">${cultura}</h6>
                 <h6 class="dinastia">${dinastia}</h6>
-                ${additionalImagesLink} <!-- Mostrar el enlace si hay imágenes adicionales -->
+                ${additionalImagesLink}
             </div>`;
-
         } catch (error) {
             idsProblematicos.push(objectId); // Si hay un error, también lo agregamos a los IDs problemáticos
         }
     }
 
     document.getElementById("grilla").innerHTML = objetosHtml;
+
+    // Aquí llamamos a renderPagination con el total de items filtrados
+    renderPagination(filteredIDs.length);
 }
-
-
-
 
 
 function renderPagination(totalItems) {
     const paginationElement = document.getElementById("paginacion");
-    paginationElement.innerHTML = '';
+    paginationElement.innerHTML = ''; // Limpiar la paginación actual
 
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -400,11 +406,12 @@ function renderPagination(totalItems) {
         const button = document.createElement("button");
         button.textContent = i;
         button.classList.add("page-button");
-        button.disabled = (i === currentPage); // Deshabilitar el botón de la página actual
+        button.disabled = (i === currentPage); // Deshabilitar botón de la página actual
 
+        // Al hacer clic, cambiar la página y volver a cargar los objetos
         button.addEventListener("click", () => {
             currentPage = i;
-            fetchObjetos(); // Llama a la función de objetos con la nueva página
+            fetchObjetos(); // Cargar los objetos de la nueva página
         });
 
         paginationElement.appendChild(button);

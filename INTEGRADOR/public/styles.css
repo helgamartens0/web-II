@@ -34,6 +34,20 @@ body {
     font-weight: bold;
 }
 
+#inicio {
+    display: flex;
+    align-items: center;
+    border: 3px solid darkorange;
+    justify-content: center;
+}
+
+#titulo {
+    text-decoration: none;
+    /* Quita el subrayado */
+    color: inherit;
+    /* Mantiene el color del texto */
+}
+
 
 /* Contenedor de la galería principal */
 
@@ -232,4 +246,33 @@ p {
     text-align: center;
     font-size: 1.2em;
     color: #666;
+}
+
+#volver-atras {
+    display: flex;
+    justify-content: center;
+    /* Centra el botón horizontalmente */
+    margin-top: 20px;
+}
+
+#volver {
+    padding: 15px 30px;
+    /* Aumenta el tamaño del botón */
+    font-size: 18px;
+    /* Tamaño de la fuente del botón */
+    background-color: #b0792b;
+    /* Color de fondo */
+    color: white;
+    /* Color del texto */
+    border: none;
+    /* Sin borde */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    cursor: pointer;
+    /* Cursor de mano cuando pasas sobre el botón */
+}
+
+#volver:hover {
+    background-color: #8f5e19;
+    /* Color de fondo al pasar el cursor */
 }

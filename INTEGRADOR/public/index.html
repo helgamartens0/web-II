@@ -7,11 +7,18 @@
     <title>PAGINA DE INICIO - Museo de Nueva York</title>
     <link rel="stylesheet" href="styles.css">
     <script src="script.js" defer></script>
+    <link rel="icon" href="favicon-32x32.png" type="image/x-icon">
+
 </head>
 
 <body>
 
     <div class="container">
+        <div id="inicio">
+            <a href="index.html" id="titulo">
+                <h1>Museo de Nueva York</h1>
+            </a>
+        </div>
         <div id="buscador">
             <form action="" method="post">
                 <div id="departamento-input">
@@ -33,13 +40,15 @@
                         <option value="China">China</option>
                         <option value="Paris">Paris</option>
                         <option value="New York">New York</option>
+                        <option value="Tokio">Tokio</option>
+                        <option value="United States">United States</option>
                     </select>
                 </div>
             </form>
 
             <button id="buscar">Buscar</button>
         </div>
-
+        <h2 id="mensaje"></h2>
         <div id="grilla"></div>
 
         <div id="paginacion">
