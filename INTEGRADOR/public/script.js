@@ -346,7 +346,7 @@ fetch(URL_SEARCH_IMAGES).then(response => response.json()).then(data => {
     fetchObjetos(); // Obtener objetos para la primera carga
 });
 
-
+/*
 async function fetchObjetos() {
     let objetosHtml = '';
     const filteredIDs = objectIDs.filter(id => !idsProblematicos.includes(id)); // Filtrar IDs problemáticos
@@ -394,6 +394,77 @@ async function fetchObjetos() {
     // Aquí llamamos a renderPagination con el total de items filtrados
     renderPagination(filteredIDs.length);
 }
+*/
+
+async function fetchObjetos() {
+    let objetosHtml = '';
+    const filteredIDs = objectIDs.filter(id => !idsProblematicos.includes(id)); // Filtrar IDs problemáticos
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, filteredIDs.length);
+
+    const currentIDs = filteredIDs.slice(startIndex, endIndex);
+    console.log(`IDs encontrados:`, currentIDs);
+
+    for (const objectId of currentIDs) {
+        try {
+            const response = await fetch(URL_OBJETOS + objectId);
+
+            if (!response.ok) {
+                console.error(`Error al obtener el objeto con ID ${objectId}: ${response.statusText}`);
+                idsProblematicos.push(objectId); // Añadir a IDs problemáticos
+                continue;
+            }
+
+            const data = await response.json();
+            const imageUrl = data.primaryImageSmall ? data.primaryImageSmall : 'imagen_no_disponible.jpeg';
+
+            // Traducimos el título, cultura y dinastía
+            const titulo = data.title ? await traducirTexto(data.title, 'auto') : 'Título no disponible';
+            const cultura = data.culture ? await traducirTexto(data.culture, 'auto') : 'Cultura no disponible';
+            const dinastia = data.dynasty ? await traducirTexto(data.dynasty, 'auto') : 'Dinastía no disponible';
+
+            const additionalImagesLink = data.additionalImages && data.additionalImages.length > 0 ?
+                `<a href="additional-images.html?objectId=${objectId}" class="additional-images-button">Ver más imágenes</a>` : '';
+
+            // Construimos el HTML del objeto
+            objetosHtml += `
+            <div class="objeto" title="Fecha de creación: ${data.objectBeginDate || 'Desconocida'}">
+                <img src="${imageUrl}" alt="No image available">
+                <h4 class="titulo">${titulo}</h4>
+                <h6 class="cultura">${cultura}</h6>
+                <h6 class="dinastia">${dinastia}</h6>
+                ${additionalImagesLink}
+            </div>`;
+        } catch (error) {
+            console.error(`Error al procesar el objeto ${objectId}:`, error);
+            idsProblematicos.push(objectId); // Añadir a IDs problemáticos
+        }
+    }
+
+    document.getElementById("grilla").innerHTML = objetosHtml || "No se encontraron objetos para mostrar.";
+
+    // Llamar a renderPagination con el total de items filtrados
+    renderPagination(filteredIDs.length);
+}
+
+// Función para traducir el texto
+async function traducirTexto(texto, idiomaFuente) {
+    const sourceLang = idiomaFuente; // Idioma fuente detectado
+    const targetLang = 'es'; // Idioma de destino (español)
+
+    const response = await fetch('/traducir', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ texto })
+    });
+
+    const data = await response.json();
+    return data.textoTraducido; // Suponiendo que el endpoint devuelve el texto traducido
+}
+
 
 
 function renderPagination(totalItems) {
@@ -421,3 +492,25 @@ function renderPagination(totalItems) {
 
 // Inicializa la aplicación
 fetchDepartamentos(); // URL base para obtener información de objetos
+
+// Supongamos que tienes un formulario para capturar el título, dinastía y cultura
+document.getElementById("enviar").addEventListener("click", async() => {
+    const titulo = document.getElementById("titulo").value;
+    const dinastia = document.getElementById("dinastia").value;
+    const cultura = document.getElementById("cultura").value;
+
+    const respuesta = await fetch("/traducir", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ titulo, dinastia, cultura })
+    });
+
+    if (respuesta.ok) {
+        const traducciones = await respuesta.json();
+        console.log(traducciones); // Aquí puedes mostrar las traducciones en tu interfaz
+    } else {
+        console.error('Error en la traducción');
+    }
+});
