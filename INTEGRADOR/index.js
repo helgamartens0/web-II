@@ -22,12 +22,12 @@ app.post("/traducir", async(req, res) => {
     const traducciones = {};
 
     try {
-        // Aquí asumimos que siempre son de inglés a español
+
         const tituloTraducido = await translate({ text: titulo, source: 'en', target: 'es' });
         const dinastiaTraducida = await translate({ text: dinastia, source: 'en', target: 'es' });
         const culturaTraducida = await translate({ text: cultura, source: 'en', target: 'es' });
 
-        // Solo asignamos el campo de traducción
+
         traducciones.titulo = tituloTraducido.translation;
         traducciones.dinastia = dinastiaTraducida.translation;
         traducciones.cultura = culturaTraducida.translation;
@@ -38,17 +38,3 @@ app.post("/traducir", async(req, res) => {
         res.status(500).json({ error: 'Error al traducir' });
     }
 });
-
-
-async function traducirTexto(texto, sLang, tLang) {
-    return new Promise((resolve, reject) => {
-        translate({ texto: texto, source: sLang, target: tLang },
-            function(result) {
-                if (result && result.translation) {
-                    resolve(result.translation);
-                } else {
-                    reject("error al traducir el texto");
-                }
-            });
-    });
-}

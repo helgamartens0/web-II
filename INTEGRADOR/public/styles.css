@@ -6,6 +6,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     background-color: #f4f4f4;
+    color: #333;
 }
 
 .container {
@@ -14,82 +15,74 @@ body {
     padding: 20px;
 }
 
-
-/* Estilo del buscador */
-
 #buscador {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    border: 3px solid rgb(0, 183, 255);
+    background-color: #e0e0e0;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 #buscador form {
     display: flex;
-    gap: 20px;
+    gap: 15px;
 }
 
 #buscador label {
-    font-weight: bold;
+    font-weight: normal;
+    color: #333;
 }
 
 #inicio {
     display: flex;
     align-items: center;
-    border: 3px solid darkorange;
     justify-content: center;
+    background-color: #b0b0b0;
+    padding: 8px;
+    border-radius: 10px;
 }
 
 #titulo {
     text-decoration: none;
-    /* Quita el subrayado */
-    color: inherit;
-    /* Mantiene el color del texto */
+    color: #333;
+    font-size: 1.4em;
 }
-
-
-/* Contenedor de la galería principal */
 
 #grilla {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    /* 4 columnas */
-    grid-auto-rows: 1fr;
-    /* Filas automáticas */
-    gap: 20px;
-    /* Espacio entre los elementos */
+    gap: 15px;
     margin-bottom: 20px;
-    border: 3px solid red;
 }
-
-
-/* Tooltip */
 
 #tooltip {
     position: absolute;
     background-color: white;
-    border: 1px solid black;
-    padding: 5px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 8px;
     z-index: 1000;
+    display: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-
-/* Estilo para los objetos de la galería */
 
 .objeto {
     background-color: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
+    border: none;
+    padding: 15px;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .objeto img {
     width: 100%;
     height: auto;
-    max-height: 200px;
+    max-height: 180px;
     object-fit: contain;
     margin-bottom: 10px;
 }
@@ -97,21 +90,19 @@ body {
 .objeto h4 {
     font-size: 16px;
     margin: 5px 0;
+    color: #666;
 }
 
 .objeto h6 {
     font-size: 14px;
-    color: #555;
+    color: #999;
     margin: 5px 0;
 }
 
 .objeto:hover {
-    transform: scale(1.05);
-    /* Efecto de hover */
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
-
-
-/* Contenedor para las imágenes adicionales */
 
 #additional-images-container {
     display: flex;
@@ -124,56 +115,52 @@ body {
     width: 200px;
     height: auto;
     margin: 10px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    transition: transform 0.3s ease;
+    border: 2px solid rgba(192, 192, 192, 0.2);
+    border-radius: 10px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .additional-image:hover {
-    transform: scale(1.05);
-    border-color: #888;
+    transform: scale(1.04);
+    border-color: #a0a0a0;
 }
-
-
-/* Botón para ver imágenes adicionales */
 
 .additional-images-link {
     display: inline-block;
     margin-top: 10px;
-    padding: 5px 10px;
-    background-color: #28a745;
+    padding: 8px 15px;
+    background-color: #888;
     color: white;
     text-decoration: none;
-    border-radius: 4px;
+    border-radius: 8px;
     transition: background-color 0.3s ease;
 }
 
 .additional-images-link:hover {
-    background-color: #218838;
+    background-color: #666;
 }
-
-
-/* Paginación */
 
 #paginacion {
     display: flex;
     justify-content: center;
     margin-top: 20px;
     text-align: center;
-    border: 3px solid rgb(128, 255, 0);
+    border: none;
 }
 
 .page-button {
     margin: 0 5px;
-    padding: 10px 15px;
-    background-color: #007bff;
+    padding: 10px 20px;
+    background-color: #888;
     color: white;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .page-button:hover {
-    background-color: #0056b3;
+    background-color: #666;
 }
 
 .page-button[disabled] {
@@ -196,83 +183,84 @@ body {
 @media (max-width: 1024px) {
     #grilla {
         grid-template-columns: repeat(3, 1fr);
-        /* 3 columnas */
+        gap: 10px;
     }
 }
 
 @media (max-width: 768px) {
     #grilla {
         grid-template-columns: repeat(2, 1fr);
-        /* 2 columnas */
     }
 }
 
 @media (max-width: 480px) {
     #grilla {
         grid-template-columns: 1fr;
-        /* 1 columna para pantallas pequeñas */
     }
 }
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    padding: 0;
-    background-color: #f4f4f4;
-}
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 2em;
-    color: #333;
-}
+/* Estilo adicional para la sección de imágenes */
 
 #grilla-adicional {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
+    gap: 10px;
     padding: 20px;
 }
 
 .imagen-adicional img {
     width: 100%;
     height: auto;
-    border: 1px solid #ccc;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
 }
+
+
+/* Estilos de texto */
 
 p {
     text-align: center;
-    font-size: 1.2em;
+    font-size: 1.1em;
     color: #666;
 }
+
+
+/* Botón para volver atrás */
 
 #volver-atras {
     display: flex;
     justify-content: center;
-    /* Centra el botón horizontalmente */
     margin-top: 20px;
 }
 
 #volver {
-    padding: 15px 30px;
-    /* Aumenta el tamaño del botón */
-    font-size: 18px;
-    /* Tamaño de la fuente del botón */
-    background-color: #b0792b;
-    /* Color de fondo */
+    padding: 12px 25px;
+    font-size: 16px;
+    background-color: #888;
+    /* Gris suave */
     color: white;
-    /* Color del texto */
     border: none;
-    /* Sin borde */
     border-radius: 8px;
-    /* Bordes redondeados */
     cursor: pointer;
-    /* Cursor de mano cuando pasas sobre el botón */
+    transition: background-color 0.3s ease;
 }
 
 #volver:hover {
-    background-color: #8f5e19;
-    /* Color de fondo al pasar el cursor */
+    background-color: #666;
+}
+
+#ver-mas-imagenes {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #888;
+    /* Gris suave */
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    /* Espacio superior */
 }
