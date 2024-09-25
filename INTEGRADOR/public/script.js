@@ -345,7 +345,7 @@ fetch(URL_SEARCH_IMAGES).then(response => response.json()).then(data => {
     objectIDs = data.objectIDs.slice(0, maxItems); // Limitar a 80 objetos
     fetchObjetos(); // Obtener objetos para la primera carga
 });
-
+fetchDepartamentos();
 /*
 async function fetchObjetos() {
     let objetosHtml = '';
@@ -396,6 +396,7 @@ async function fetchObjetos() {
 }
 */
 
+
 async function fetchObjetos() {
     let objetosHtml = '';
     const filteredIDs = objectIDs.filter(id => !idsProblematicos.includes(id)); // Filtrar IDs problemáticos
@@ -419,10 +420,25 @@ async function fetchObjetos() {
             const data = await response.json();
             const imageUrl = data.primaryImageSmall ? data.primaryImageSmall : 'imagen_no_disponible.jpeg';
 
-            // Traducimos el título, cultura y dinastía
-            const titulo = data.title ? await traducirTexto(data.title, 'auto') : 'Título no disponible';
-            const cultura = data.culture ? await traducirTexto(data.culture, 'auto') : 'Cultura no disponible';
-            const dinastia = data.dynasty ? await traducirTexto(data.dynasty, 'auto') : 'Dinastía no disponible';
+            // Hacer la solicitud al backend para traducir los textos
+            const traduccionResponse = await fetch('/traducir', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    titulo: data.title || 'Título no disponible',
+                    dinastia: data.dynasty || 'Dinastía no disponible',
+                    cultura: data.culture || 'Cultura no disponible'
+                })
+            });
+
+            const traducciones = await traduccionResponse.json();
+
+            // Accedemos a los campos de texto traducido
+            const titulo = traducciones.titulo || 'Título no disponible';
+            const cultura = traducciones.cultura || 'Cultura no disponible';
+            const dinastia = traducciones.dinastia || 'Dinastía no disponible';
 
             const additionalImagesLink = data.additionalImages && data.additionalImages.length > 0 ?
                 `<a href="additional-images.html?objectId=${objectId}" class="additional-images-button">Ver más imágenes</a>` : '';
@@ -448,22 +464,6 @@ async function fetchObjetos() {
     renderPagination(filteredIDs.length);
 }
 
-// Función para traducir el texto
-async function traducirTexto(texto, idiomaFuente) {
-    const sourceLang = idiomaFuente; // Idioma fuente detectado
-    const targetLang = 'es'; // Idioma de destino (español)
-
-    const response = await fetch('/traducir', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ texto })
-    });
-
-    const data = await response.json();
-    return data.textoTraducido; // Suponiendo que el endpoint devuelve el texto traducido
-}
 
 
 
@@ -488,29 +488,3 @@ function renderPagination(totalItems) {
         paginationElement.appendChild(button);
     }
 }
-
-
-// Inicializa la aplicación
-fetchDepartamentos(); // URL base para obtener información de objetos
-
-// Supongamos que tienes un formulario para capturar el título, dinastía y cultura
-document.getElementById("enviar").addEventListener("click", async() => {
-    const titulo = document.getElementById("titulo").value;
-    const dinastia = document.getElementById("dinastia").value;
-    const cultura = document.getElementById("cultura").value;
-
-    const respuesta = await fetch("/traducir", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ titulo, dinastia, cultura })
-    });
-
-    if (respuesta.ok) {
-        const traducciones = await respuesta.json();
-        console.log(traducciones); // Aquí puedes mostrar las traducciones en tu interfaz
-    } else {
-        console.error('Error en la traducción');
-    }
-});
