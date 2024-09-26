@@ -2,7 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import translate from 'node-google-translate-skidz';
 import { franc } from 'franc';
-import fetch from 'node-fetch'; // Asegúrate de que esto esté correctamente importado
+import fetch from 'node-fetch'; 
 
 const app = express();
 const port = 3000;
