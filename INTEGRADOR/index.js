@@ -13,6 +13,9 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 
 
+app.listen(port, () => {
+    console.log(`Servidor escuchando en http://localhost:${port}`);
+});
 
 app.post("/traducir", async(req, res) => {
     const { titulo, dinastia, cultura } = req.body;
@@ -34,10 +37,4 @@ app.post("/traducir", async(req, res) => {
         console.error('Error al traducir:', error);
         res.status(500).json({ error: 'Error al traducir' });
     }
-});
-
-
-
-app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
 });
