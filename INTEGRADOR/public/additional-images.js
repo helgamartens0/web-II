@@ -13,6 +13,7 @@ if (objectId) {
         .then(data => {
             const grillaAdicional = document.getElementById('grilla-adicional');
             if (data.additionalImages && data.additionalImages.length > 0) {
+                // Generar el HTML para la grilla de imágenes adicionales
                 const additionalImagesHtml = data.additionalImages.map(imgUrl => `
                     <div class="imagen-adicional">
                         <img src="${imgUrl}" alt="Imagen adicional">
